@@ -1,0 +1,31 @@
+{
+    "name": "blog",
+    "version": "1.0.0",
+    "description": "",
+    "main": "src/index.js",
+    "scripts": {
+        "start": "nodemon --inspect src/index.js",
+        "watch": "node-sass --watch src/resources/scss/ -o src/public/css/",
+        "test": "echo \"Error: no testnspecified\" && exit 1"
+    },
+    "keywords": [
+        "f8",
+        "blog",
+        "f8",
+        "nodejs",
+        "nodejs"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cyrus-le/NodeJS.git"
+    },
+    "author": "Cyrus Le",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.17.1",
+        "express-handlebars": "^5.2.0",
+        "morgan": "^1.10.0",
+        "nodeman": "^1.1.2",
+        "node-sass": "^5.0.0"
+    }
+}
