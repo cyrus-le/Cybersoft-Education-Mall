@@ -1,12 +1,11 @@
-class SiteController{
-    
+class SiteController {
     //GET /
-    index(req, resp){
+    index(req, resp) {
         resp.render('home');
     }
     //[GET] /news/:slug
-    search(req, resp){
+    search(req, resp) {
         resp.render('search');
     }
 }
-module.exports = new SiteController;
+module.exports = new SiteController();
