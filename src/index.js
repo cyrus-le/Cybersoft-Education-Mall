@@ -5,13 +5,20 @@ const handlebars = require('express-handlebars');
 const app = express();
 const port = 3000;
 const route = require('./routes');
-
+const db = require('../config/db');
 //HTTP logger
 app.use(morgan('combined'));
+
+//Connect
+db.connect();
 
 // app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public'))); //PHẢI ĐỂ THƯ MỤC PUBLIC. VÌ public là phía client side. Những gì nằm trong public là phải được hiện thị ra nên nếu để 'public/img' thì chỉ show ra ảnh nhưng không show ra những folder khác như css (vậy thì trang html sẽ không có được css lên :'((()   ))
 
+//Gọi thư viện để gửi dữ liệu từ form lên server
+//XMLHttpRequest, fetch
+app.use(express.urlencoded());
+app.use(express.json());
 //  __dirname: E:\Semester\OJT - On the Job Training\blog\src
 
 //Template engine
@@ -23,16 +30,12 @@ app.engine(
     }),
 );
 
-app.set(
-    'view engine',
-
-    'hbs',
-);
-app.set('views', path.join(__dirname, 'resources\\views'));
+app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, 'resources', 'views'));
 
 //Route init
 route(app);
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+    console.log(`App listening at http://localhost:${port}`);
 });

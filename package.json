@@ -6,7 +6,7 @@
     "scripts": {
         "beautiful": "lint-staged",
         "start": "nodemon --inspect src/index.js",
-        "watch": "node-sass --watch src/resources/scss/ -o src/public/css/",
+        "watch": "node-sass --watch src/resources/scss/ --output src/public/css/",
         "test": "echo \"Error: no testnspecified\" && exit 1"
     },
     "lint-staged": {
@@ -34,7 +34,9 @@
     "license": "ISC",
     "dependencies": {
         "express": "^4.17.1",
-        "express-handlebars": "^5.2.0"
+        "express-handlebars": "^5.2.0",
+        "mongoose": "^5.11.14",
+        "mongoose-slug-generator": "^1.0.4"
     },
     "devDependencies": {
         "husky": "^4.3.8",
