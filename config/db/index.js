@@ -3,7 +3,9 @@ async function connect() {
     try {
         await mongoose.connect('mongodb://localhost:27017/cybersoft_dev', {
             useNewUrlParser: true,
-            useUnifiedTopology: true
+            useUnifiedTopology: true,
+            useCreateIndex: true
+
         });
         console.log("Connect successfully");
     } catch (error) {

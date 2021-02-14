@@ -22,7 +22,6 @@
         "css",
         "javascript",
         "blog",
-        "f8",
         "nodejs",
         "nodejs"
     ],
@@ -33,10 +32,12 @@
     "author": "Cyrus Le",
     "license": "ISC",
     "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.2",
         "express": "^4.17.1",
         "express-handlebars": "^5.2.0",
         "method-override": "^3.0.0",
         "mongoose": "^5.11.14",
+        "mongoose-delete": "^0.5.3",
         "mongoose-slug-generator": "^1.0.4"
     },
     "devDependencies": {
@@ -45,6 +46,7 @@
         "morgan": "^1.10.0",
         "node-sass": "^5.0.0",
         "nodeman": "^1.1.2",
-        "prettier": "^2.2.1"
+        "prettier": "^2.2.1",
+        "sweetalert": "^2.1.2"
     }
 }

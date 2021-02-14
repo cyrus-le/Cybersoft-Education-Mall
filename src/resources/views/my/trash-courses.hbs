@@ -1,0 +1,213 @@
+<form method="POST" name="container-form" action="/courses/handle-form-actions" class="mt-4">
+    <div>
+        <h2>My deleted courses</h2>
+        <a class="btn btn-outline-success" href="/my/stored/courses/">
+            List of courses
+        </a>
+    </div>
+    <div class="mt-4 d-flex align-items-center">
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="checkbox-all" value="">
+            <label class="form-check-label" for="checkbox-all">
+                Choose everything
+            </label>
+        </div>
+
+        <select id="cboxOptions" class="form-control form-control-sm checkbox-select-all-options w-25" name="action"
+            required>
+            <option value="">----Choose the options-----</option>
+            <option value="delete-permanent">Delete permanent</option>
+            <option value="restore">Restore</option>
+        </select>
+
+        <button type="button" class="btn btn-outline-danger btn-sm btn-check-all-submit" disabled>Submit</button>
+
+        {{!-- Confirm of delete courses --}}
+        <div id="delete-courses-modal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete this course permanent</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>This action cannot restore. Are you sure to delete all of these courses?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btn-delete-courses" type="submit" class="btn btn-danger">Delete</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover mt-4">
+        <thead class="thead-dark">
+            <tr>
+                <th class="text-center" >#</th>
+                <th class="text-center" scope="col">NO.</th>
+                <th class="text-center" scope="col">Name of Course</th>
+                <th class="text-center" scope="col">Level</th>
+                <th class="text-center"  scope="col">Time of Deleted</th>
+                <th class="text-center" colspan="2">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="table ">
+            {{#each courses}}
+            <tr>
+                <td>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="courseIds[]" value="{{this._id}}">
+                    </div>
+                </td>
+                {{!-- sum là function đc khai báo ở file index.js --}}
+                <th scope="row">{{sum @index 1}}</th>
+                <td>{{this.name}}</td>
+                <td>{{this.level}}</td>
+                <td>{{this.deletedAt}}</td>
+                <td>
+                    <a class="btn btn-info btn-restore" data-id="{{this._id}}">Restore</a>
+
+                    <a class="btn btn-danger mr-3" data-id="{{this._id}}" data-toggle="modal"
+                        data-target="#delete-course-modal">Delete permanent</a>
+                </td>
+            </tr>
+            {{else }}
+            <tr>
+                <td colspan="6">
+                    <div class="alert alert-light text-center" role="alert">
+                        No deleted courses <a href="/my/stored/courses">Click here to return the lists of courses!</a>
+                    </div>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+
+</form>
+
+
+
+
+
+{{!-- Confirm of delete course --}}
+<div id="delete-course-modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete this course permanent</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>This action cannot restore. Are you sure to delete this course?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-delete-course" type="button" class="btn btn-danger">Delete</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{{!-- Delete form --}}
+<form name="delete-course-form" method="post"></form>
+{{!-- Restore form --}}
+<form name="restore-course-form" method="post"></form>
+
+
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var courseId;
+        var deleteForm = document.forms['delete-course-form'];
+        var restoreForm = document.forms['restore-course-form'];
+        var btnDeleteCourse = document.getElementById('btn-delete-course');
+        var btnDeleteCourses = $('#btn-delete-courses');
+        var btnRestore = $('.btn-restore');
+        var checkboxAll = $('#checkbox-all');
+        var courseItemCheckBox = $('input[name="courseIds[]"]');
+        var btnSubmit = $('.btn-check-all-submit');
+        var cboxOptions = $('#cboxOptions');
+        var containerForm = $('#containerForm');
+
+        cboxOptions.change(function (e) {
+            var option = $(this).children('option:selected').val();
+            if (option == null) {
+                cboxOptions.attr('required', true);
+            }
+            console.log(option);
+            renderCheckAllSubmitBtn();
+            switch (option) {
+                case 'delete-permanent':
+                    e.preventDefault();
+                    btnSubmit.attr('data-toggle', 'modal');
+                    btnSubmit.attr('data-target', '#delete-courses-modal');
+                    break;
+                case 'restore':
+                    btnSubmit.attr('type', 'submit');
+                    break;
+            }
+
+        });
+
+        //When dialog confirm clicked
+        $('#delete-course-modal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            courseId = button.data('id') // id này chính là data-id do mình đặt ra
+
+        });
+
+
+        //When delete course btn clicked
+        btnDeleteCourse.onclick = function () {
+            deleteForm.action = '/courses/' + courseId + '/force?_method=DELETE';
+            deleteForm.submit();
+        }
+
+        //Restore btn clicked
+        btnRestore.click(function (e) {
+            e.preventDefault();
+            var courseId = $(this).data('id');
+            restoreForm.action = '/courses/' + courseId + '/restore?_method=PATCH';
+            restoreForm.submit();
+        });
+
+        //Checkbox all được changed
+        checkboxAll.change(function () {
+            var isCheckedAll = $(this).prop('checked');
+            courseItemCheckBox.prop('checked', isCheckedAll);
+            renderCheckAllSubmitBtn();
+        });
+        // Cách 2: Course item checkbox changed. (Khi tick hết tất cả các course thì tự động cái tick checkboxAll cũng sẽ được tick lên)
+        courseItemCheckBox.change(function (e) {
+            var isCheckedAll = courseItemCheckBox.length === $('input[name="courseIds[]"]:checked').length;
+            checkboxAll.prop('checked', isCheckedAll);
+            renderCheckAllSubmitBtn();
+        });
+        //Re render check all submit button
+        function renderCheckAllSubmitBtn() {
+            var checkCount = $('input[name="courseIds[]"]:checked').length;
+            if (checkCount > 0) {
+                // Cách 1: btnDoIt.removeAttr('disabled');
+                //Cách 2: 
+                btnSubmit.attr('disabled', false);
+            } else {
+                btnSubmit.attr('disabled', true);
+            }
+        }
+
+
+
+
+
+    });
+</script>

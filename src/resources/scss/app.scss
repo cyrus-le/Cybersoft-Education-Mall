@@ -1,5 +1,5 @@
 @import 'variables';
-
+@import '/node_modules/@fortawesome/fontawesome-free/less/';
 h1 {
     font-size: 1rem;
     background-color: $grey_color;
@@ -10,4 +10,16 @@ h1 {
     height: 28px;
     border-radius: 50%;
     margin-right: 4px;
+}
+.checkbox-select-all-options {
+    width: 0px;
+    margin: 0 8px;
+}
+.checkbox-select-all-options option {
+    width: 400px;
+    text-align-last: center;
+}
+th,
+td {
+    text-align: center;
 }

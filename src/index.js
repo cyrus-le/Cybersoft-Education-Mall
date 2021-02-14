@@ -7,8 +7,9 @@ const app = express();
 const port = 3000;
 const route = require('./routes');
 const db = require('../config/db');
+const fontawesome = require('@fortawesome/fontawesome-free');
 //HTTP logger
-// app.use(morgan('combined'));
+app.use(morgan('combined'));
 
 //Connect
 db.connect();
@@ -21,7 +22,11 @@ app.use(methodOverride('_method'));
 
 //Gọi thư viện để gửi dữ liệu từ form lên server
 //XMLHttpRequest, fetch
-app.use(express.urlencoded());
+app.use(
+    express.urlencoded({
+        extended: true,
+    }),
+);
 app.use(express.json());
 //  __dirname: E:\Semester\OJT - On the Job Training\blog\src
 
