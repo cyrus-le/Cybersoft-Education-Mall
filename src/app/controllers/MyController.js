@@ -6,7 +6,10 @@ const {
 class MyController {
     //[GET] /my/stored/courses
     storedCourses(req, res, next) {
-        Promise.all([Course.find({}), Course.countDocumentsDeleted({})])
+        Promise.all([
+            Course.find({}).sortable(req),
+            Course.countDocumentsDeleted({}),
+        ])
             .then(([courses, deletedCount]) => {
                 res.render('my/stored-courses', {
                     deletedCount,

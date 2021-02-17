@@ -7,9 +7,10 @@ const app = express();
 const port = 3000;
 const route = require('./routes');
 const db = require('../config/db');
-const fontawesome = require('@fortawesome/fontawesome-free');
+const sortMiddleware = require('./app/middlewares/SortMiddleware');
+
 //HTTP logger
-app.use(morgan('combined'));
+// app.use(morgan('combined'));
 
 //Connect
 db.connect();
@@ -19,6 +20,9 @@ app.use(express.static(path.join(__dirname, 'public'))); //PHẢI ĐỂ THƯ M�
 
 //HTTP method override: dùng để PUT, HEAD, TRACE, OPTION trong thẻ <form></form>
 app.use(methodOverride('_method'));
+
+//Custom Middleware
+app.use(sortMiddleware);
 
 //Gọi thư viện để gửi dữ liệu từ form lên server
 //XMLHttpRequest, fetch
@@ -36,9 +40,7 @@ app.engine(
     'hbs',
     handlebars({
         extname: '.hbs', //extension file. Thay vì gõ cái đuôi .handlebars thì mình sẽ đổi thành .hbs
-        helpers: {
-            sum: (a, b) => a + b, //hỗ trợ cộng chỉ mục. Nó giống tạo thư viện r import vô
-        },
+        helpers: require('./helpers/handlebars'),
     }),
 );
 

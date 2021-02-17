@@ -30,15 +30,30 @@
             <button class="btn btn-info btn-sm btn-check-all-submit" disabled>Do it</button>
         </div>
     </div>
-    <table class="table table-bordered table-hover table-striped mt-4">
+    <table class="table table-bordered table-hover mt-4">
         <thead class="thead-dark">
             <tr>
                 <th>#</th>
-                <th class="text-center" scope="col">NO.</th>
-                <th class="text-center" scope="col">Name of Course</th>
-                <th class="text-center" scope="col">Level</th>
-                <th class="text-center" scope="col">Time of Created</th>
-                <th class="text-center" colspan="2">Actions</th>
+                <th class="text-center" scope="col">
+                    NO.
+                    {{{sortable @index _sort}}}
+                </th>
+                <th scope="col">
+                    Name of Course
+                    {{{sortable 'name' _sort}}}
+                </th>
+                <th class="text-center" scope="col">
+                    Level
+                    {{{sortable 'level' _sort}}}
+                </th>
+                <th class="text-center" scope="col">
+                    Time of Created
+                    {{{sortable 'createdAt' _sort}}}
+                </th>
+
+                <th class="text-center" colspan="2">
+                    Actions
+                </th>
             </tr>
         </thead>
         <tbody class="table ">
