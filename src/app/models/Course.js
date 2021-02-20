@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
 const slug = require('mongoose-slug-generator');
 const mongooseDelete = require('mongoose-delete');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const Schema = mongoose.Schema;
 const CourseSchema = new Schema(
     {
+        _id: { type: Number },
         name: {
             type: String,
             maxlength: 255,
@@ -29,7 +31,9 @@ const CourseSchema = new Schema(
         },
         //slug này lấy tên field/attribute name để làm slug trên thanh URL
     },
+    //Options khác
     {
+        _id: false, //Thêm trường này để mongo không can thiệp vào trường _id nữa
         timestamps: true,
     },
 );
@@ -43,6 +47,7 @@ CourseSchema.query.sortable = function (req) {
     }
     return this;
 };
+CourseSchema.plugin(AutoIncrement);
 
 //Add plugins
 mongoose.plugin(slug);

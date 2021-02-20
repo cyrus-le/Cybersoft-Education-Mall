@@ -35,8 +35,8 @@
             <tr>
                 <th>#</th>
                 <th class="text-center" scope="col">
-                    NO.
-                    {{{sortable @index _sort}}}
+                    ID
+                    {{{sortable '_id' _sort}}}
                 </th>
                 <th scope="col">
                     Name of Course
@@ -65,7 +65,8 @@
                     </div>
                 </td>
                 {{!-- sum là function đc khai báo ở file index.js --}}
-                <th scope="row">{{sum @index 1}}</th>
+                {{!-- <td scope="row">{{sum @index 1}}</td> --}}
+                 <th scope="row">{{this._id}}</th>
                 <td>{{this.name}}</td>
                 <td>{{this.level}}</td>
                 <td>{{this.createdAt}}</td>
